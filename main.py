@@ -1,6 +1,7 @@
 from PIL import Image
 import customtkinter as ctk
 import pyautogui
+import os
 from tkinter import messagebox
 from tkinter import filedialog
 
@@ -78,6 +79,7 @@ def main():
             self.imagecon = ctk.CTkImage(dark_image=Image.open(filename), size=(480, 270))
 
             self.imagedisplay = ctk.CTkLabel(self, image=self.imagecon, text="Preview of the image")
+            self.imagedisplay.configure(font=("Lato", 18))
             self.imagedisplay.pack(padx=20, pady=15)
 
             update_editor()
@@ -96,7 +98,12 @@ def main():
             self.resizable(False, False)         
             
             def update_app():
-                self.filename_label.configure(text=f"File Path: {filename}")
+                filenamelabel = "No image selected."
+                if filename is not None:
+                    filenamelabel = os.path.basename(filename)
+                else:
+                    filenamelabel = "No image selected."
+                self.filename_label.configure(text=f"File Name: {filenamelabel}")
                 if filename is not None:
                     self.clear_button.configure(state="normal")
                     self.edit_button.configure(state="normal")
@@ -128,12 +135,12 @@ def main():
             self.entryframe = ctk.CTkFrame(self, width=app_width-frwidth, height=app_height)
             self.entryframe.pack_propagate(0)
             self.entryframe.pack(expand=True, side="right")
-
-            self.filename_label = ctk.CTkLabel(self.mainframe, text=f"File Path: {filename}")
+            
+            self.filename_label = ctk.CTkLabel(self.mainframe, text=f"File Name: {filename}")
             self.filename_label.configure(font=("Lato", 18))
             self.filename_label.pack(padx=12, pady=15)
     
-            self.open_button = ctk.CTkButton(self.mainframe, text="Open Image", command=openfile)
+            self.open_button = ctk.CTkButton(self.mainframe, text="Open Image", command=openfile, corner_radius=20)
             self.open_button.pack(padx=20, pady=15)
 
             self.edit_button = ctk.CTkButton(self.mainframe, text="Edit the image", command=openeditor)
