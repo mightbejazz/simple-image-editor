@@ -46,13 +46,13 @@ def main():
 
             def update_editor():
                 if filename is None:
-                    self.mainlabel.configure(text="No image selected.")
+                    self.mainlabel.configure(text="")
                     self.output_button.configure(state="disabled")
                     self.effchoice = ""
                     self.effscroll.set(value=(""))
                     self.effscroll.configure(state="disabled")
                     self.imagecon.configure(size=(1, 1))
-                    self.imagedisplay.configure(text="")
+                    self.imagedisplay.configure(width=480, height=270, text="No image selected.")
                 else:
                     self.mainlabel.configure(text="Pick an effect to apply.")
                     self.output_button.configure(state="normal")
@@ -76,14 +76,14 @@ def main():
             self.imagedisplay.configure(font=(app_font, 18))
             self.imagedisplay.pack(padx=20, pady=15)            
             
-            self.mainlabel = ctk.CTkLabel(self, text="Pick an effect to apply.", font=(app_font, 16))
+            self.mainlabel = ctk.CTkLabel(self, text="Pick an effect to apply.")
             self.mainlabel.configure(font=(app_font, 18))
             self.mainlabel.pack(padx=20, pady=12)
 
-            self.effscroll = ctk.CTkOptionMenu(self, values=["Grayscale"], command=update_choice, variable=self.effchoice, width=150, height=35, corner_radius=13, font=(app_font, 16))
+            self.effscroll = ctk.CTkOptionMenu(self, values=["Grayscale"], command=update_choice, variable=self.effchoice, width=150, height=35)
             self.effscroll.pack(padx=20, pady=12)
 
-            self.output_button = ctk.CTkButton(self, text="Display Output", command=output, width=150, height=35, corner_radius=13, font=(app_font, 16))
+            self.output_button = ctk.CTkButton(self, text="Display Output", command=output, width=150, height=35)
             self.output_button.pack(padx=20, pady=12)
 
             update_editor()
@@ -96,7 +96,7 @@ def main():
             y = (screen_height - app_height) / 2
             
             ctk.set_appearance_mode("dark")
-            ctk.set_default_color_theme("green")
+            ctk.set_default_color_theme("assets/custom-theme.json")
             self.title("Image Processing")
             self.geometry(f"{app_width}x{app_height}+{int(x)-100}+{int(y)-100}")
             self.resizable(False, False)       
@@ -146,16 +146,16 @@ def main():
             self.filename_label.configure(font=(app_font, 19))
             self.filename_label.pack(padx=12, pady=45)
     
-            self.open_button = ctk.CTkButton(self.mainframe, text="Open Image", command=openfile, width=150, height=35, corner_radius=13, font=(app_font, 16), border_width=2.5)
+            self.open_button = ctk.CTkButton(self.mainframe, text="Open Image", command=openfile, width=150, height=35, border_width=2.5)
             self.open_button.pack(padx=20, pady=15)
 
-            self.edit_button = ctk.CTkButton(self.mainframe, text="Edit the image", command=openeditor, width=150, height=35, corner_radius=13, font=(app_font, 16))
+            self.edit_button = ctk.CTkButton(self.mainframe, text="Edit the image", command=openeditor, width=150, height=35)
             self.edit_button.pack(padx=20, pady=15)
 
-            self.clear_button = ctk.CTkButton(self.mainframe, text="Clear Path", command=clearfile, hover=True, hover_color="dark red", width=150, height=35, corner_radius=13, font=(app_font, 16))
+            self.clear_button = ctk.CTkButton(self.mainframe, text="Clear Path", command=clearfile, hover=True, hover_color="dark red", width=150, height=35)
             self.clear_button.pack(padx=20, pady=15)
             
-            self.exit_button = ctk.CTkButton(self.mainframe, text="Exit", command=self.quit, hover=True, hover_color="dark red", width=150, height=35, corner_radius=13, font=(app_font, 16))
+            self.exit_button = ctk.CTkButton(self.mainframe, text="Exit", command=self.quit, hover=True, hover_color="dark red", width=150, height=35)
             self.exit_button.pack(padx=20, pady=15)
 
             self.darkmode_switch = ctk.CTkSwitch(self.mainframe, text="Dark Mode", onvalue="dark", offvalue="light", command=change_theme, font=(app_font, 14))
