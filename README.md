@@ -3,5 +3,4 @@
 
 ## To-Do:
 1. Change imagecon params to scale with image in editor frame.
-2. Edit UI elements to make them prettier.
-3. Add more effects.
+2. Add more effects.
