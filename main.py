@@ -1,7 +1,9 @@
 from PIL import Image
+from PIL import ImageFilter
 import customtkinter as ctk
 import pyautogui
 import os
+import cv2
 from tkinter import messagebox
 from tkinter import filedialog
 
@@ -37,10 +39,98 @@ def main():
                 img = Image.open(filename)
                 img = img.convert("L")
                 img.show()
+            
+            def resize():
+                img = Image.open(filename)
+                img = img.resize((640, 360))
+                img.show()
+
+            def crop():
+                img = Image.open(filename)
+                img = img.crop((0, 0, 320, 180))
+                img.show()
+
+            def simple_blur():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.BLUR)
+                img.show()
+
+            def brightness():
+                img = Image.open(filename)
+                img = img.point(lambda p: p * 1.5)
+                img.show()
+            
+            def contrast():
+                img = Image.open(filename)
+                img = img.point(lambda p: p * 1.5)
+                img.show()
+
+            def saturation():
+                img = Image.open(filename)
+                img = img.point(lambda p: p * 1.5)
+                img.show()
+            
+            def gaussian_blur():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.GaussianBlur(5))
+                img.show()
+
+            def sharpen():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.SHARPEN)
+                img.show()
+
+            def edge_detection():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.FIND_EDGES)
+                img.show()
+
+            def emboss():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.EMBOSS)
+                img.show()
+
+            def contour():
+                img = Image.open(filename)
+                img = img.filter(ImageFilter.CONTOUR)
+                img.show()
+
+            def face_detection():
+                img = cv2.imread(filename)
+                face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+                cv2.imshow("Face detection", img)
              
             def output():
                 if self.effchoice == "Grayscale":
                     grayscale()
+                elif self.effchoice == "Resize":
+                    resize()
+                elif self.effchoice == "Crop":
+                    crop()
+                elif self.effchoice == "Simple blur":
+                    simple_blur()
+                elif self.effchoice == "Brightness":
+                    brightness()
+                elif self.effchoice == "Contrast":
+                    contrast()
+                elif self.effchoice == "Saturation":
+                    saturation()
+                elif self.effchoice == "Gaussian blur":
+                    gaussian_blur()
+                elif self.effchoice == "Sharpen":
+                    sharpen()
+                elif self.effchoice == "Edge detection":
+                    edge_detection()
+                elif self.effchoice == "Emboss":
+                    emboss()
+                elif self.effchoice == "Contour":
+                    contour()
+                elif self.effchoice == "Face detection":
+                    face_detection()
                 elif self.effchoice == "":
                     messagebox.showerror("No effect selected.", "Try selecting an effect from the dropdown menu.")
 
@@ -80,10 +170,11 @@ def main():
             self.mainlabel.configure(font=(app_font, 18))
             self.mainlabel.pack(padx=20, pady=12)
 
-            self.effscroll = ctk.CTkOptionMenu(self, values=["Grayscale"], command=update_choice, variable=self.effchoice, width=150, height=35)
+            self.effscroll = ctk.CTkOptionMenu(self, command=update_choice, variable=self.effchoice, width=150, height=35, 
+                                               values=["Grayscale", "Resize", "Crop", "Simple blur", "Brightness", "Contrast", "Saturation", "Gaussian blur", "Sharpen", "Edge detection", "Emboss", "Contour", "Face detection"])
             self.effscroll.pack(padx=20, pady=12)
 
-            self.output_button = ctk.CTkButton(self, text="Display Output", command=output, width=150, height=35)
+            self.output_button = ctk.CTkButton(self, text="Apply", command=output, width=150, height=35)
             self.output_button.pack(padx=20, pady=12)
 
             update_editor()
