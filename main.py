@@ -1,11 +1,11 @@
 from PIL import Image
 from PIL import ImageFilter
+from tkinter import messagebox
+from tkinter import filedialog
 import customtkinter as ctk
 import pyautogui
 import os
 import cv2
-from tkinter import messagebox
-from tkinter import filedialog
 
 def main():
     global filename
@@ -240,7 +240,7 @@ def main():
             self.open_button = ctk.CTkButton(self.mainframe, text="Open Image", command=openfile, width=150, height=35, border_width=2.5)
             self.open_button.pack(padx=20, pady=15)
 
-            self.edit_button = ctk.CTkButton(self.mainframe, text="Edit the image", command=openeditor, width=150, height=35)
+            self.edit_button = ctk.CTkButton(self.mainframe, text="Edit the Image", command=openeditor, width=150, height=35)
             self.edit_button.pack(padx=20, pady=15)
 
             self.clear_button = ctk.CTkButton(self.mainframe, text="Clear Path", command=clearfile, hover=True, hover_color="dark red", width=150, height=35)
