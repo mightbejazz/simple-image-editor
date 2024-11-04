@@ -1,7 +1,10 @@
 from PIL import Image
 from PIL import ImageFilter
+from PIL import ImageEnhance
 from tkinter import messagebox
 from tkinter import filedialog
+import numpy as np
+import matplotlib.pyplot as plt
 import customtkinter as ctk
 import pyautogui
 import os
@@ -42,12 +45,14 @@ def main():
             
             def resize():
                 img = Image.open(filename)
-                img = img.resize((640, 360))
+                factor = 0.5
+                new_image_size = (int(img.size[0]*factor), int(img.size[1]*factor))
+                img = img.resize((new_image_size[0], new_image_size[1]))
                 img.show()
 
             def crop():
                 img = Image.open(filename)
-                img = img.crop((0, 0, 320, 180))
+                img = img.crop((0, 0, 600, 400))
                 img.show()
 
             def simple_blur():
@@ -81,9 +86,45 @@ def main():
                 img.show()
 
             def edge_detection():
-                img = Image.open(filename)
-                img = img.filter(ImageFilter.FIND_EDGES)
-                img.show()
+                image = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+                sigma1=1.0 
+                sigma2=2.0
+                
+                gaussian1 = cv2.GaussianBlur(image, (0, 0), sigma1)
+                gaussian2 = cv2.GaussianBlur(image, (0, 0), sigma2)
+                dog = gaussian1 - gaussian2
+                dog_normalized = cv2.normalize(dog, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+                plt.figure(figsize=(10, 5))
+                plt.subplot(1, 2, 1)
+                plt.title('Original Image')
+                plt.imshow(image, cmap='gray')
+                plt.subplot(1, 2, 2)
+                plt.title('Edge Detection (DoG)')
+                plt.imshow(dog_normalized, cmap='gray')
+                plt.show()
+
+            def ascii_art():
+                image = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+                width = 100
+                height = int((image.shape[0] / image.shape[1]) * width * 0.55) 
+                resized_image = cv2.resize(image, (width, height))
+                ascii_chars = "@%#*+=-:. "
+                ascii_image = []
+
+                for row in resized_image:
+                    ascii_row = "".join(ascii_chars[pixel // 32] for pixel in row)
+                    ascii_image.append(ascii_row)
+                
+                plt.figure(figsize=(10, height * 0.15))
+
+                for i, line in enumerate(ascii_image):
+                    plt.text(0, height - i - 1, line, fontfamily='monospace', fontsize=8, va='top', ha='left')
+
+                plt.xlim(-1, 1) 
+                plt.ylim(-1, height)
+                plt.axis('off')
+                plt.show()
 
             def emboss():
                 img = Image.open(filename)
@@ -94,6 +135,33 @@ def main():
                 img = Image.open(filename)
                 img = img.filter(ImageFilter.CONTOUR)
                 img.show()
+
+            def enhance():
+                img = Image.open(filename)
+                factor = 2
+                new_image_size = (int(img.size[0]*factor), int(img.size[1]*factor))
+                img = img.resize((new_image_size[0], new_image_size[1]), resample=1)
+                img.show()
+
+            def instagram_filter1():
+                image = Image.open(filename)
+                enhancer = ImageEnhance.Brightness(image)
+                image = enhancer.enhance(1.2)
+                enhancer = ImageEnhance.Contrast(image)
+                image = enhancer.enhance(1.3)
+                enhancer = ImageEnhance.Color(image)
+                image = enhancer.enhance(1.5)
+                enhancer = ImageEnhance.Sharpness(image)
+                image = enhancer.enhance(1.2)
+                image.show()
+
+            def instagram_filter2():
+                image = Image.open(filename)
+                image = ImageEnhance.Color(image).enhance(1.8)
+                image = ImageEnhance.Brightness(image).enhance(0.9)
+                image = ImageEnhance.Contrast(image).enhance(1.4) 
+                image = ImageEnhance.Sharpness(image).enhance(1.3)
+                image.show()
 
             def face_detection():
                 img = cv2.imread(filename)
@@ -131,6 +199,14 @@ def main():
                     contour()
                 elif self.effchoice == "Face detection":
                     face_detection()
+                elif self.effchoice == "Enhance":
+                    enhance()
+                elif self.effchoice == "Instagram filter 1":
+                    instagram_filter1()
+                elif self.effchoice == "Instagram filter 2":
+                    instagram_filter2()
+                elif self.effchoice == "ASCII art":
+                    ascii_art()
                 elif self.effchoice == "":
                     messagebox.showerror("No effect selected.", "Try selecting an effect from the dropdown menu.")
 
@@ -171,7 +247,7 @@ def main():
             self.mainlabel.pack(padx=20, pady=12)
 
             self.effscroll = ctk.CTkOptionMenu(self, command=update_choice, variable=self.effchoice, width=150, height=35, 
-                                               values=["Grayscale", "Resize", "Crop", "Simple blur", "Brightness", "Contrast", "Saturation", "Gaussian blur", "Sharpen", "Edge detection", "Emboss", "Contour", "Face detection"])
+                                               values=["Grayscale", "Resize", "Crop", "Simple blur", "Brightness", "Contrast", "Saturation", "Gaussian blur", "Sharpen", "Edge detection", "Emboss", "Contour", "Face detection", "Enhance", "Instagram filter 1", "Instagram filter 2", "ASCII art"])
             self.effscroll.pack(padx=20, pady=12)
 
             self.output_button = ctk.CTkButton(self, text="Apply", command=output, width=150, height=35)
