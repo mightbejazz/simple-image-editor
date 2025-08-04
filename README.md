@@ -46,13 +46,13 @@ python main.py
   - Built-in `tkinter` – for basic dialogs (file open/save, alerts)
 
 ## 📸 Screenshots
-
-_Add UI screenshots here to give users a preview of the application._  
+ 
 Example:
 
 ```markdown
 ![Main Window](assets/screenshot1.png)
 ![Image Opened](assets/screenshot2.png)
+```
 
 ## 🛠️ To-Do
 
