@@ -20,6 +20,7 @@ Make sure Python 3.8+ is installed, then install the required libraries:
 
 ```bash
 pip install -r requirements.txt
+```
 
 ## 🚀 How to Run
 
@@ -29,6 +30,7 @@ Clone the repository and run the Python script:
 git clone https://github.com/mightbejazz/simple-image-editor.git
 cd simple-image-editor
 python main.py
+```
 
 ## 🧠 Tech Stack
 
