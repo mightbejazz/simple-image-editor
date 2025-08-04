@@ -162,7 +162,8 @@ Documentation.docx
 test.py
 Documentation.docx
 tempCodeRunnerFile.py
-sellen.jpg
+.gitattributes
+LICENSE
 /screenshots
 *.docx
 /.vscode
