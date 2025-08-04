@@ -46,13 +46,9 @@ python main.py
   - Built-in `tkinter` – for basic dialogs (file open/save, alerts)
 
 ## 📸 Screenshots
- 
-Example:
 
-```markdown
 ![Main Window](assets/screenshot1.png)
 ![Image Opened](assets/screenshot2.png)
-```
 
 ## 🛠️ To-Do
 
